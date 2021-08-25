@@ -28,10 +28,6 @@ Spark作业
 
 
 
-#### 源码地址
-
-https://github.com/wanghuan2054/geektime/tree/master/0815SparkAPI
-
 #### 开发环境
 
 1. scala 2.12.12
@@ -112,48 +108,6 @@ wholeTextFiles的partition数量是根据用户指定或者文件大小来（文
 
 
 
-#### 本地运行
-
-![image-20210819095652554](images/image-20210819095652554.png)
-
-
-
-#### 集群运行
-
-##### Input文件上传HDFS
-
-```shell
-[root@node1 hadoop-3.1.3]# bin/hdfs dfs -put /home/hadoop/input/* /tmp/input/
-
-# 验证上传是否成功
-[root@node1 hadoop-3.1.3]# bin/hdfs dfs -ls /tmp/input/
-SLF4J: Class path contains multiple SLF4J bindings.
-SLF4J: Found binding in [jar:file:/opt/software/hadoop-3.1.3/share/hadoop/common/lib/slf4j-log4j12-1.7.25.jar!/org/slf4j/impl/StaticLoggerBinder.class]
-SLF4J: Found binding in [jar:file:/opt/software/hive-3.1.2/lib/log4j-slf4j-impl-2.10.0.jar!/org/slf4j/impl/StaticLoggerBinder.class]
-SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
-SLF4J: Actual binding is of type [org.slf4j.impl.Log4jLoggerFactory]
-Found 4 items
--rw-r--r--   3 root supergroup         16 2021-08-18 15:57 /tmp/input/0
--rw-r--r--   3 root supergroup         10 2021-08-18 15:57 /tmp/input/1
--rw-r--r--   3 root supergroup         14 2021-08-18 15:57 /tmp/input/2
-```
-
-##### spark-submit提交jar包
-
-```shell
-#  hdfs 路径
-[root@node1 hadoop-3.1.3]# bin/spark-submit --master yarn --deploy-mode client --class com.geektime.InvertedIndex1 /home/hadoop/SparkAPI-1.0-SNAPSHOT.jar hdfs:///tmp/input/ hdfs:///tmp/output/
-
-# 本地路径
-[root@node1 hadoop-3.1.3]#  bin/spark-submit --master yarn --deploy-mode client --class com.geektime.InvertedIndex1 /home/hadoop/SparkAPI-1.0-SNAPSHOT.jar file:///home/hadoop/input/ file:///home/hadoop/output/
-```
-
-##### 运行结果
-
-![image-20210819214301972](../../../BigData/Presto/images/image-20210819214301972.png)
-
-
-
 ## 题目2
 
 Distcp的spark实现
@@ -217,30 +171,3 @@ Distcp的spark实现
 
 </project>
 ```
-
-#### 源码地址
-
-https://github.com/wanghuan2054/geektime/tree/master/0815SparkAPI
-
-#### 本地运行 
-
-IDEA 中连接HDFS 进行DistCp 分布式拷贝
-
-![image-20210824220337352](images/image-20210824220337352.png)
-
-#### 集群运行
-
-##### spark-submit提交jar包
-
-```shell
-#  hdfs 路径
-[root@node1 spark-yarn]# bin/spark-submit --master yarn --deploy-mode client --class com.geektime.SparkDistCP /home/hadoop/SparkAPI-1.0-SNAPSHOT.jar hdfs://192.168.2.100:8020/input hdfs://192.168.2.100:8020/input_cp -m 2 -i
-```
-
-##### 运行结果
-
-![image-20210824220614334](images/image-20210824220614334.png)
-
-
-
-![image-20210824220809820](images/image-20210824220809820.png)
